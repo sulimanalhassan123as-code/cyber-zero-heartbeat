@@ -1,0 +1,16 @@
+name: Cyber-Zero Heartbeat
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Sweep both bots
+        run: |
+          curl -s --max-time 50 "${{ secrets.WOLF_SWEEP_URL }}" > /dev/null &
+          curl -s --max-time 50 "${{ secrets.BOUNTY_SWEEP_URL }}" > /dev/null &
+          wait
+          echo heartbeat done
